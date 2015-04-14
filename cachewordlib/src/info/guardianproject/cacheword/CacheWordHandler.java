@@ -30,7 +30,7 @@ public class CacheWordHandler {
     private Context mContext;
     private CacheWordService mCacheWordService;
     private ICacheWordSubscriber mSubscriber;
-    private Notification mNotification;
+    public Notification mNotification;
     private int mTimeout;
 
     /**
@@ -339,6 +339,9 @@ public class CacheWordHandler {
      */
     public void setNotification(Notification notification) {
         mNotification = notification;
+        if (mCacheWordService != null) {
+            mCacheWordService.setNotification(mNotification);
+        }
     }
 
     /**
