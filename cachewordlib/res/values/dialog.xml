@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="cacheword_dialog_title">Caution</string>
+    <string name="cacheword_dialog_text">Locking the app may interrupt ongoing tasks such as uploads and downloads</string>
+    <string name="cacheword_dialog_yes">Lock</string>
+    <string name="cacheword_dialog_no">Cancel</string>
+
+</resources>
