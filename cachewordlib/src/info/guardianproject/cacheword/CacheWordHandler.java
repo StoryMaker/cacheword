@@ -370,6 +370,13 @@ public class CacheWordHandler {
         return PendingIntent.getService(context, 0, notificationIntent, 0);
     }
 
+    // added to distinguish timeout locks from manual locks
+    static public PendingIntent getTimeoutLockPendingIntent(Context context) {
+        Intent notificationIntent = getBlankServiceIntent(context);
+        notificationIntent.setAction(Constants.INTENT_LOCK_TIMEOUT);
+        return PendingIntent.getService(context, 0, notificationIntent, 0);
+    }
+
     // / private helpers
     // /////////////////////////////////////////
 

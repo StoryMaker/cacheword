@@ -5,5 +5,6 @@
     <string name="cacheword_dialog_text">Locking the app may interrupt ongoing tasks such as uploads and downloads</string>
     <string name="cacheword_dialog_yes">Lock</string>
     <string name="cacheword_dialog_no">Cancel</string>
+    <string name="cacheword_timeout">600</string>
 
 </resources>

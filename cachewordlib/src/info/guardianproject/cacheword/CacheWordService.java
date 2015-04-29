@@ -47,6 +47,11 @@ public class CacheWordService extends Service {
 
         Log.d(TAG, "onStart: with intent " + action);
 
+        if (action.equals(Constants.INTENT_LOCK_TIMEOUT)) {
+            Log.d(TAG, "onStart: LOCK COMMAND on timeout, locking");
+            lock();
+        }
+
         if (action.equals(Constants.INTENT_LOCK_CACHEWORD)) {
 
             Log.d(TAG, "onStart: LOCK COMMAND received, request confirmation");
@@ -221,7 +226,7 @@ public class CacheWordService extends Service {
         Log.d(TAG, "starting timeout: " + seconds);
 
         if (mTimeoutIntent == null)
-            mTimeoutIntent = CacheWordHandler.getPasswordLockPendingIntent(this);
+            mTimeoutIntent = CacheWordHandler.getTimeoutLockPendingIntent(this);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + (seconds * 1000), mTimeoutIntent);
