@@ -2,16 +2,19 @@
 package info.guardianproject.cacheword;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class CacheWordService extends Service {
 
@@ -44,9 +47,30 @@ public class CacheWordService extends Service {
 
         Log.d(TAG, "onStart: with intent " + action);
 
-        if (action.equals(Constants.INTENT_LOCK_CACHEWORD)) {
-            Log.d(TAG, "onStart: LOCK COMMAND received..locking");
+        if (action.equals(Constants.INTENT_LOCK_TIMEOUT)) {
+            Log.d(TAG, "onStart: LOCK COMMAND on timeout, locking");
             lock();
+        }
+
+        if (action.equals(Constants.INTENT_LOCK_CACHEWORD)) {
+
+            Log.d(TAG, "onStart: LOCK COMMAND received, request confirmation");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.cacheword_dialog_title));
+            builder.setMessage(getString(R.string.cacheword_dialog_text));
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+            builder.setPositiveButton(getString(R.string.cacheword_dialog_yes), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    Log.d(TAG, "onStart: LOCK COMMAND confirmed, locking");
+                    lock();
+                }
+            });
+            builder.setNegativeButton(getString(R.string.cacheword_dialog_no), null);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            dialog.show();
         }
         return START_NOT_STICKY;
     }
@@ -202,7 +226,7 @@ public class CacheWordService extends Service {
         Log.d(TAG, "starting timeout: " + seconds);
 
         if (mTimeoutIntent == null)
-            mTimeoutIntent = CacheWordHandler.getPasswordLockPendingIntent(this);
+            mTimeoutIntent = CacheWordHandler.getTimeoutLockPendingIntent(this);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + (seconds * 1000), mTimeoutIntent);

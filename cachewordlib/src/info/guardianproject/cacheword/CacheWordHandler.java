@@ -30,7 +30,7 @@ public class CacheWordHandler {
     private Context mContext;
     private CacheWordService mCacheWordService;
     private ICacheWordSubscriber mSubscriber;
-    private Notification mNotification;
+    public Notification mNotification;
     private int mTimeout;
 
     /**
@@ -339,6 +339,9 @@ public class CacheWordHandler {
      */
     public void setNotification(Notification notification) {
         mNotification = notification;
+        if (mCacheWordService != null) {
+            mCacheWordService.setNotification(mNotification);
+        }
     }
 
     /**
@@ -364,6 +367,13 @@ public class CacheWordHandler {
     static public PendingIntent getPasswordLockPendingIntent(Context context) {
         Intent notificationIntent = getBlankServiceIntent(context);
         notificationIntent.setAction(Constants.INTENT_LOCK_CACHEWORD);
+        return PendingIntent.getService(context, 0, notificationIntent, 0);
+    }
+
+    // added to distinguish timeout locks from manual locks
+    static public PendingIntent getTimeoutLockPendingIntent(Context context) {
+        Intent notificationIntent = getBlankServiceIntent(context);
+        notificationIntent.setAction(Constants.INTENT_LOCK_TIMEOUT);
         return PendingIntent.getService(context, 0, notificationIntent, 0);
     }
 

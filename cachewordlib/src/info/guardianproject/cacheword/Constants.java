@@ -8,6 +8,7 @@ public class Constants {
 
     // Intents
     public static final String INTENT_LOCK_CACHEWORD = "info.guardianproject.cacheword.LOCK_CACHEWORD";
+    public static final String INTENT_LOCK_TIMEOUT = "info.guardianproject.cacheword.LOCK_TIMEOUT";
     public static final String INTENT_NEW_SECRETS = "info.guardianproject.cacheword.NEW_SECRETS";
 
     // Values
